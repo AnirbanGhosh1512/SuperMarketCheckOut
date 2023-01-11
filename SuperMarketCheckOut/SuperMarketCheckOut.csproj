@@ -58,13 +58,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Common\PricingStrategy.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SuperMarketCheckoutRules\Checkout.cs" />
-    <Compile Include="SuperMarketItemList\Item.cs" />
-    <Compile Include="SuperMarketPricingStrategy\IndividualPricingStrategy.cs" />
-    <Compile Include="SuperMarketPricingStrategy\MultiPricingStrategy.cs" />
+    <Compile Include="SuperMarketItemList\ItemList.cs" />
+    <Compile Include="SuperMarketPricingRules\PricingStrategyOffer.cs" />
+    <Compile Include="SuperMarketPricingRules\PricingStrategyDiscount.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

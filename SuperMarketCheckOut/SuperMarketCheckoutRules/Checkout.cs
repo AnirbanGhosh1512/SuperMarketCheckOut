@@ -1,4 +1,5 @@
 ﻿using SuperMarketCheckOut.SuperMarketItemList;
+using SuperMarketCheckOut.SuperMarketPricingStrategy;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,29 +13,39 @@ namespace SuperMarketCheckOut.SuperMarketCheckoutRules
     /// out of the supermarket system. @Author: Anirban Ghosh
     /// </summary>
 
-    class Checkout
+    public class Checkout
     {
-        private Item[] items;
+        private readonly List<string> _basket;
+        private readonly IList<ItemList> _inventory;
+        private readonly IList<PricingStrategyOffer> _offers;
 
-        public Checkout()
+        public Checkout(IList<ItemList> inventory, IList<PricingStrategyOffer> offers)
         {
-            items = new Item[0];
+            _basket = new List<string>();
+            _inventory = inventory;
+            _offers = offers;
         }
 
-        public void Scan(Item item)
+        public void Scan(string product)
         {
-            Array.Resize(ref items, items.Length + 1);
-            items[items.Length - 1] = item;
+            _basket.Add(product);
         }
 
-        public decimal Total()
+        public decimal GetTotal()
         {
-            decimal totalPrice = 0;
-            foreach (Item item in items)
-            {
-                totalPrice += item.PricingStrategy.CalculatePrice(1);
-            }
-            return totalPrice;
+            var preDiscountTotal = GetPreDiscountTotal();
+            var discounts = ApplyOfferDiscounts();
+            return preDiscountTotal + discounts;
+        }
+
+        private decimal GetPreDiscountTotal()
+        {
+            return _basket.Sum(item => _inventory.First(i => i.Sku == item).Price);
+        }
+
+        private decimal ApplyOfferDiscounts()
+        {
+            return _offers.Sum(offer => offer.GetDiscounts(_basket).Select(d => d.Amount).Sum());
         }
     }
  }

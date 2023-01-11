@@ -1,43 +1,74 @@
-﻿using SuperMarketCheckOut.Common;
-using SuperMarketCheckOut.SuperMarketCheckoutRules;
+﻿using SuperMarketCheckOut.SuperMarketCheckoutRules;
 using SuperMarketCheckOut.SuperMarketItemList;
 using SuperMarketCheckOut.SuperMarketPricingStrategy;
+using SuperMarketCheckOut.SuperMarketCheckoutRules;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Xunit;
 
 namespace SuperMarketCheckOut
 {
+    // <summary>
+    /// This class is main class responsible to run the program after checkout
+    /// into the supermarket. @Author: Anirban Ghosh
+    /// </summary>
     class Program
     {
+        private static List<ItemList> _inventory;
+        private static List<PricingStrategyOffer> _offers;
+        private static String _basket;
+        private static decimal _expectedTotal;
         static void Main(string[] args)
         {
-            // Create pricing strategies
-            PricingStrategy individualPricingStrategyA = new IndividualPricingStrategy(0.5m);
-            PricingStrategy individualPricingStrategyB = new IndividualPricingStrategy(0.25m);
-            PricingStrategy multiPricingStrategyC = new MultiPricingStrategy(3, 1.3m);
+            //Call Setup for Item and Price for the customers. @Anirban 11.01.2023
+            SetUp();
+            //Call ReturnTotal amount to the customer for billing. @Anirban 11.01.2023
+            _basket= "A,B,B,C,D";
+            _expectedTotal= 0; //As we expect some return for the billing, intially it defined as 0 or no value
+            try
+            {
+                _expectedTotal = GetTotal_GivenSuccessionOfScannedItems_ReturnsCorrectTotal(_basket, _expectedTotal);
+                Console.WriteLine("(C) BillAmount: . . . . . . . . {0:C}", _expectedTotal);
+                Console.ReadLine();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
 
-            // Create items
-            Item itemA = new Item("A", individualPricingStrategyA);
-            Item itemB = new Item("B", individualPricingStrategyB);
-            Item itemC = new Item("C", multiPricingStrategyC);
-
-            // Create checkout
-            Checkout checkout = new Checkout();
-
-            // Scan items
-            checkout.Scan(itemA);
-            checkout.Scan(itemB);
-            checkout.Scan(itemC);
-            checkout.Scan(itemA);
-            checkout.Scan(itemA);
-
-            // Calculate total price
-            decimal totalPrice = checkout.Total();
-            Console.WriteLine($"Total price: {totalPrice:F2}");
-            Console.ReadKey();
         }
+
+        public static void SetUp()
+        {
+            _inventory = new List<ItemList>
+            {
+                new ItemList("A", 50M),
+                new ItemList("B", 30M),
+                new ItemList("C", 20M),
+                new ItemList("D", 15M)
+            };
+
+            _offers = new List<PricingStrategyOffer>()
+            {
+                new PricingStrategyOffer("A", 3, -20),
+                new PricingStrategyOffer("B", 2, -15)
+            };
+        }
+
+        public static decimal GetTotal_GivenSuccessionOfScannedItems_ReturnsCorrectTotal(string basket, decimal expectedTotal)
+        {
+            var checkout = new Checkout(_inventory, _offers);
+
+            foreach (var item in basket.Split(','))
+            {
+                checkout.Scan(item);
+            }
+            expectedTotal = checkout.GetTotal();
+            return expectedTotal;
+        }
+
     }
 }
