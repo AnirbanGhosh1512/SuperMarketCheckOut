@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SuperMarketCheckOut.SuperMarketPricingStrategy
+namespace SuperMarketCheckOut.SuperMarketPricingRules
 {
     /// <summary>
     /// This structure is responsible for the define Amount

@@ -1,13 +1,8 @@
 ﻿using SuperMarketCheckOut.SuperMarketCheckoutRules;
 using SuperMarketCheckOut.SuperMarketItemList;
-using SuperMarketCheckOut.SuperMarketPricingStrategy;
-using SuperMarketCheckOut.SuperMarketCheckoutRules;
+using SuperMarketCheckOut.SuperMarketPricingRules;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Xunit;
 
 namespace SuperMarketCheckOut
 {
