@@ -68,7 +68,6 @@
     <Compile Include="SuperMarketItemList\ItemList.cs" />
     <Compile Include="SuperMarketPricingRules\PricingStrategyOffer.cs" />
     <Compile Include="SuperMarketPricingRules\PricingStrategyDiscount.cs" />
-    <Compile Include="UnitTestCase\SuperMarketCheckOutTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

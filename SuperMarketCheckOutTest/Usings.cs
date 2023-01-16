@@ -1,0 +1,4 @@
+global using NUnit.Framework;
+using SuperMarketCheckOut.SuperMarketCheckoutRules;
+using SuperMarketCheckOut.SuperMarketItemList;
+using SuperMarketCheckOut.SuperMarketPricingRules;
